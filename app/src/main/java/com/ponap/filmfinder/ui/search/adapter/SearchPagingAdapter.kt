@@ -13,17 +13,21 @@ class SearchPagingAdapter(private val clickListener: (movie: Movie, position: In
     private var selectedId: String? = null
 
     fun updateUserSelection(imdbId: String? = null) {
-        val prev = selectedId
+        val ids: MutableSet<String> = mutableSetOf()
+        selectedId?.let { ids.add(it) }
+        imdbId?.let { ids.add(it) }
 
         selectedId = imdbId
 
-        // find the views to update:
-        val positions = snapshot().items.withIndex()
-            .filter { it.value.imdbId == prev || it.value.imdbId == selectedId }
-            .map { it.index }
+        if (ids.isNotEmpty()) {
+            // find the views to update:
+            val positions = snapshot().items.withIndex()
+                .filter { it.value.imdbId in ids }
+                .map { it.index }
 
-        for (position in positions) {
-            notifyItemChanged(position)
+            for (position in positions) {
+                notifyItemChanged(position)
+            }
         }
     }
 
