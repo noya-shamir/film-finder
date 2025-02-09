@@ -1,6 +1,6 @@
 ### Film Finder ###
 
-An app for bowsing movies & TV shows using the OMDB API (a free, open-source, widely available IMDB alternative).
+An app for browsing movies & TV shows using the OMDB API (a free, open-source, widely available IMDB alternative).
 
 #### Description ####
 Users are able to search for movies and TV shows by title, browse the results in a RecyclerView, and tap on a specific item to view detailed information. 
