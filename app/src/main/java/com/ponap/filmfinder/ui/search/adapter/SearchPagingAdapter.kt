@@ -5,7 +5,10 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.ponap.filmfinder.model.Movie
 
-class SearchPagingAdapter(private val clickListener: (movie: Movie, position: Int) -> Unit) :
+class SearchPagingAdapter(
+    private val favoritesClickListener: (imdbId: Movie) -> Unit,
+    private val clickListener: (movie: Movie, position: Int) -> Unit
+) :
     PagingDataAdapter<Movie, SearchItemViewHolder>(
         diffCallback
     ) {
@@ -34,7 +37,7 @@ class SearchPagingAdapter(private val clickListener: (movie: Movie, position: In
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         val item = getItem(position)
         val isSelected = selectedId != null && selectedId == item?.imdbId
-        holder.onBind(item, isSelected, clickListener)
+        holder.onBind(item, isSelected, favoritesClickListener, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {

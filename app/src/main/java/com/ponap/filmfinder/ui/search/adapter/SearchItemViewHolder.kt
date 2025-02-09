@@ -22,10 +22,12 @@ class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     private val title: TextView = binding.title
     private val subtitle: TextView = binding.year
     private val card: CardView = binding.itemCard
+    private val isFavoriteIcon: ImageView = binding.isFavorite
 
     fun onBind(
         item: Movie?,
         isSelected: Boolean,
+        favoritesClickListener: (imdbId: Movie) -> Unit,
         clickListener: (movie: Movie, position: Int) -> Unit
     ) {
         title.text = item?.title
@@ -37,6 +39,15 @@ class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         }
 
         itemView.contentDescription = item?.title
+
+        item?.let { updateIsFavoriteIcon(item.isFavorite) }
+        isFavoriteIcon.setOnClickListener {
+            item?.let {
+                item.isFavorite = !item.isFavorite
+                updateIsFavoriteIcon(it.isFavorite)
+                favoritesClickListener(item)
+            }
+        }
 
 
         if (isSelected) {
@@ -51,4 +62,13 @@ class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
             }
         }
     }
+
+    private fun updateIsFavoriteIcon(isFavorite: Boolean) {
+        val imageResource = if (isFavorite) android.R.drawable.star_on else
+            android.R.drawable.star_off
+        val stringResource = if (isFavorite) R.string.is_favorite else R.string.not_favorite
+        isFavoriteIcon.setImageResource(imageResource)
+        isFavoriteIcon.contentDescription = isFavoriteIcon.resources.getString(stringResource)
+    }
+
 }

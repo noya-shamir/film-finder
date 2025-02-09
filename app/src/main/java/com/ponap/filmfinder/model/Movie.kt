@@ -6,7 +6,8 @@ data class Movie(
     val imdbId: String,
     val type: String,
     val poster: String,
-    var additionalDetails: MovieDetails? = null
+    var additionalDetails: MovieDetails? = null,
+    var isFavorite: Boolean = false
 ) {
     companion object {
         fun fromApiSearchResponse(response: MovieBasicInfo): Movie {

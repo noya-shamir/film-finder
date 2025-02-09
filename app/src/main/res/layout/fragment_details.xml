@@ -14,11 +14,22 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
+        android:paddingHorizontal="40dp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="kfgqkefgkeufgksd" />
+
+    <ImageView
+        android:id="@+id/isFavorite"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/not_favorite"
+        android:padding="12dp"
+        android:src="@android:drawable/star_off"
+        app:layout_constraintBaseline_toBaselineOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="0dp"

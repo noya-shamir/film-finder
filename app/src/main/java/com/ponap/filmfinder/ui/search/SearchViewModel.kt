@@ -41,6 +41,7 @@ class SearchViewModel @Inject constructor(
     fun submitQuery(userQuery: String) {
         currentQueryText = userQuery.trim()
         pagingSource?.invalidate()
+        repository.setSelectedMovie(null)
     }
 
     fun getCurrentQuery() = currentQueryText
@@ -51,7 +52,7 @@ class SearchViewModel @Inject constructor(
      * checks if this movie is selected or un-selected, and informs the repository
      * @return true if the movie was selected, false otherwise
      * */
-    fun setSelectedMoviesNeeded(movie: Movie, position: Int): Boolean {
+    fun setSelectedMovieAsNeeded(movie: Movie): Boolean {
         return if (isMovieAlreadySelected(movie.imdbId)) {
             // this is a case on un-selecting a movie:
             repository.setSelectedMovie(null)
@@ -65,6 +66,14 @@ class SearchViewModel @Inject constructor(
 
     private fun isMovieAlreadySelected(imdbId: String): Boolean {
         return imdbId == selectedMovieLiveData.value?.imdbId
+    }
+
+    fun onMovieIsFavoriteChanged(movie: Movie) {
+        if (movie.isFavorite){
+            repository.addToFavorites(movie.imdbId)
+        } else {
+            repository.removeFromFavorites(movie.imdbId)
+        }
     }
 
 }

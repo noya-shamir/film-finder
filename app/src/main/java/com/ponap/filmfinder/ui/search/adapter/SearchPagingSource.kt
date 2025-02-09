@@ -32,7 +32,11 @@ class SearchPagingSource(
         }
 
         val list =
-            response.getOrNull()?.movies?.map { Movie.fromApiSearchResponse(it) } ?: emptyList()
+            response.getOrNull()?.movies?.map {
+                val movie = Movie.fromApiSearchResponse(it)
+                movie.isFavorite = repository.isFavorite(movie.imdbId)
+                movie
+            } ?: emptyList()
         totalResults = response.getOrNull()?.totalResults?.toIntOrNull() ?: 0
         return LoadResult.Page(
             data = list,

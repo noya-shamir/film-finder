@@ -6,7 +6,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-const val OMDB_API_KEY = "c7254a1"
 const val BASE_URL = "https://www.omdbapi.com/"
 
 interface OmdbService {

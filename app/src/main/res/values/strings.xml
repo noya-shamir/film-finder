@@ -10,4 +10,6 @@
     <string name="search_no_results">Sorry, no movies found, try a different term</string>
     <string name="details_error">Oops, something went wrong, couldn\'t get more details</string>
     <string name="retry">Retry</string>
+    <string name="is_favorite">is favorite</string>
+    <string name="not_favorite">not favorite</string>
 </resources>

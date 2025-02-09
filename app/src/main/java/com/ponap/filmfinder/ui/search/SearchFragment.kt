@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -39,7 +40,7 @@ class SearchFragment : Fragment() {
 
     private val snapHelper = LinearSnapHelper()
 
-    private val adapter = SearchPagingAdapter(::onItemClicked)
+    private val adapter = SearchPagingAdapter(::onItemFavoritesIconClicked, ::onItemClicked)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,11 +70,16 @@ class SearchFragment : Fragment() {
                 // Only emit when REFRESH LoadState changes.
                 .distinctUntilChangedBy { it.refresh }
                 // Only react to cases where REFRESH completes, such as NotLoading.
-                .filter { it.refresh is LoadState.NotLoading }
+                .filter { it.refresh is LoadState.NotLoading || it.refresh is LoadState.Error }
                 // Show empty view as needed
                 .collect {
                     val isEmpty = adapter.itemCount == 0 && viewModel.getCurrentQuery().isNotEmpty()
                     binding.emptyResults.isVisible = isEmpty
+                    (it.refresh as? LoadState.Error)?.let { errorState ->
+                        context?.let { ctx ->
+                            Toast.makeText(ctx, errorState.error.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
         }
 
@@ -132,7 +138,7 @@ class SearchFragment : Fragment() {
     private fun onItemClicked(movie: Movie, position: Int) {
 
         // pass the selection to viewModel, which will also check if the movie is selected or un-selected
-        if (viewModel.setSelectedMoviesNeeded(movie, position)) {
+        if (viewModel.setSelectedMovieAsNeeded(movie)) {
             // this is a new selected movie (i.e. not un-selecting already selected one), so
             // snap to position, then navigate to details:
             binding.recycler.smoothScrollToPosition(position)
@@ -152,6 +158,10 @@ class SearchFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun onItemFavoritesIconClicked(movie: Movie) {
+        viewModel.onMovieIsFavoriteChanged(movie)
     }
 
     private fun safelyNavigateToDetails() {

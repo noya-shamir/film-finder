@@ -33,10 +33,21 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/isFavorite"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="kfgqkefgkeufgksd" />
+
+        <ImageView
+            android:id="@+id/isFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:contentDescription="@string/not_favorite"
+            android:src="@android:drawable/star_off"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <TextView
             android:id="@+id/year"

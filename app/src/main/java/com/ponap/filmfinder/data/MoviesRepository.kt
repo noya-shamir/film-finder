@@ -10,6 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MoviesRepository @Inject constructor(
+    private val localDataSource: MoviesLocalDataSource,
     private val remoteDataSource: MoviesRemoteDataSource
 ) {
 
@@ -29,5 +30,15 @@ class MoviesRepository @Inject constructor(
     fun setSelectedMovie(movie: Movie?) {
         _selectedMovieLiveData.value = movie
     }
+
+    fun addToFavorites(imdbId: String) {
+        localDataSource.addToFavorites(imdbId)
+    }
+
+    fun removeFromFavorites(imdbId: String) {
+        localDataSource.removeFromFavorites(imdbId)
+    }
+
+    fun isFavorite(imdbId: String) = localDataSource.isFavorite(imdbId)
 
 }

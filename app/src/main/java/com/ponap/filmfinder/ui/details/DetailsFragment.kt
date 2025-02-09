@@ -41,6 +41,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setIsFavoriteListener()
+
         // observe selectedMovieLiveData to display the movie and additional details once fetched:
         viewModel.selectedMovieLiveData.observe(viewLifecycleOwner) { movie ->
             movie?.let {
@@ -77,6 +79,7 @@ class DetailsFragment : Fragment() {
         }
         binding.image.contentDescription = movie.title
         displayAdditionalDetails(movie.additionalDetails)
+        updateIsFavoriteIcon(movie.isFavorite)
     }
 
     private fun displayAdditionalDetails(details: MovieDetails?) {
@@ -92,6 +95,20 @@ class DetailsFragment : Fragment() {
             binding.errorMessage.visibility = View.GONE
         } else {
             binding.detailsContainer.visibility = View.GONE
+        }
+    }
+
+    private fun updateIsFavoriteIcon(isFavorite: Boolean) {
+        val imageResource = if (isFavorite) android.R.drawable.star_on else
+            android.R.drawable.star_off
+        val stringResource = if (isFavorite) R.string.is_favorite else R.string.not_favorite
+        binding.isFavorite.setImageResource(imageResource)
+        binding.isFavorite.contentDescription = resources.getString(stringResource)
+    }
+
+    private fun setIsFavoriteListener() {
+        binding.isFavorite.setOnClickListener {
+            viewModel.toggleMovieIsFavorite()
         }
     }
 

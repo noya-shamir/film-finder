@@ -62,6 +62,19 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    fun toggleMovieIsFavorite() {
+        val movie = selectedMovieLiveData.value
+        movie?.let {
+            movie.isFavorite = !movie.isFavorite
+            if (movie.isFavorite){
+                repository.addToFavorites(movie.imdbId)
+            } else {
+                repository.removeFromFavorites(movie.imdbId)
+            }
+            repository.setSelectedMovie(movie)
+        }
+    }
+
     data class LoadingUiState(
         val isLoading: Boolean = false,
         val error: String? = null
