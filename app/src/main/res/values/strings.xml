@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Film Finder</string>
+    <string name="hint_search_movie">Search movie or show</string>
+    <string name="director">Director: %s</string>
+    <string name="writers">Writers: %s</string>
+    <string name="cast">Cast: %s</string>
+    <string name="plot">Plot: %s</string>
+    <string name="ratings">IMDB rating: %s</string>
+    <string name="separated_text">%1$s • %2$s</string>
+    <string name="search_no_results">Sorry, no movies found, try a different term</string>
+    <string name="details_error">Oops, something went wrong, couldn\'t get more details</string>
+    <string name="retry">Retry</string>
+</resources>

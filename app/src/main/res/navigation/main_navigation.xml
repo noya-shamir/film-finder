@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ponap.filmfinder.ui.search.SearchFragment"
+        android:label=""
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.ponap.filmfinder.ui.details.DetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_details" />
+
+</navigation>
