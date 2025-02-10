@@ -3,13 +3,13 @@ package com.ponap.filmfinder.ui.search.adapter
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.ponap.filmfinder.model.Movie
+import com.ponap.filmfinder.model.Media
 
 class SearchPagingAdapter(
-    private val favoritesClickListener: (imdbId: Movie) -> Unit,
-    private val clickListener: (movie: Movie, position: Int) -> Unit
+    private val favoritesClickListener: (media: Media) -> Unit,
+    private val clickListener: (media: Media, position: Int) -> Unit
 ) :
-    PagingDataAdapter<Movie, SearchItemViewHolder>(
+    PagingDataAdapter<Media, SearchItemViewHolder>(
         diffCallback
     ) {
 
@@ -45,12 +45,12 @@ class SearchPagingAdapter(
     }
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<Media>() {
+            override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean {
                 return oldItem.imdbId == newItem.imdbId
             }
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            override fun areContentsTheSame(oldItem: Media, newItem: Media): Boolean {
                 return oldItem == newItem
             }
 

@@ -1,6 +1,6 @@
 package com.ponap.filmfinder.model
 
-data class MovieDetails(
+data class MediaDetails(
     val genre: String,
     val director: String,
     val writer: String,
@@ -9,8 +9,8 @@ data class MovieDetails(
     val imdbRating: String,
 ) {
     companion object {
-        fun fromApiDetailsResponse(response: MovieDetailsResponse): MovieDetails {
-            return MovieDetails(
+        fun fromApiDetailsResponse(response: MediaDetailsResponse): MediaDetails {
+            return MediaDetails(
                 genre = response.genre ?: "",
                 director = response.director ?: "",
                 writer = response.writer ?: "",

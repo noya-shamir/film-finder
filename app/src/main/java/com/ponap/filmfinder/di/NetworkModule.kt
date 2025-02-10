@@ -36,7 +36,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    @Named("moviesRetrofit")
+    @Named("omdbRetrofit")
     fun provideDogsRetrofit(
         okHttpClient: dagger.Lazy<OkHttpClient>
     ): Retrofit {
@@ -49,6 +49,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOmdbApi(@Named("moviesRetrofit") moviesRetrofit: Retrofit): OmdbService =
-        moviesRetrofit.create(OmdbService::class.java)
+    fun provideOmdbApi(@Named("omdbRetrofit") omdbRetrofit: Retrofit): OmdbService =
+        omdbRetrofit.create(OmdbService::class.java)
 }

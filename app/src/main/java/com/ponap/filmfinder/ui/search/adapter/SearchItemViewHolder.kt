@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.error
 import coil3.request.placeholder
 import com.ponap.filmfinder.R
 import com.ponap.filmfinder.databinding.ItemSearchBinding
-import com.ponap.filmfinder.model.Movie
+import com.ponap.filmfinder.model.Media
 import com.ponap.filmfinder.ui.onThrottleFirstClickListener
 
 class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -25,10 +26,10 @@ class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     private val isFavoriteIcon: ImageView = binding.isFavorite
 
     fun onBind(
-        item: Movie?,
+        item: Media?,
         isSelected: Boolean,
-        favoritesClickListener: (imdbId: Movie) -> Unit,
-        clickListener: (movie: Movie, position: Int) -> Unit
+        favoritesClickListener: (media: Media) -> Unit,
+        clickListener: (media: Media, position: Int) -> Unit
     ) {
         title.text = item?.title
         subtitle.text = item?.year
@@ -50,15 +51,12 @@ class SearchItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         }
 
 
-        if (isSelected) {
-            card.setCardBackgroundColor(card.resources.getColor(R.color.selected_item_background))
-        } else {
-            card.setCardBackgroundColor(card.resources.getColor(R.color.item_background))
-        }
+        val colorRes = if (isSelected) R.color.selected_item_background else R.color.item_background
+        card.setCardBackgroundColor(ContextCompat.getColor(card.context, colorRes))
 
         itemView.onThrottleFirstClickListener {
-            item?.let { movie ->
-                clickListener(movie, bindingAdapterPosition)
+            item?.let { media ->
+                clickListener(media, bindingAdapterPosition)
             }
         }
     }

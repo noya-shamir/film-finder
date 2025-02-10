@@ -1,7 +1,7 @@
 package com.ponap.filmfinder.network
 
-import com.ponap.filmfinder.model.MovieDetailsResponse
-import com.ponap.filmfinder.model.MovieSearchResponse
+import com.ponap.filmfinder.model.MediaDetailsResponse
+import com.ponap.filmfinder.model.MediaSearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,10 +13,10 @@ interface OmdbService {
     suspend fun search(
         @Query("s") searchText: String,
         @Query("page") page: Int?,
-    ): Response<MovieSearchResponse>
+    ): Response<MediaSearchResponse>
 
     @GET("/")
-    suspend fun getMovieDetails(
-        @Query("i") movieId: String,
-    ): Response<MovieDetailsResponse>
+    suspend fun getMediaDetails(
+        @Query("i") mediaId: String,
+    ): Response<MediaDetailsResponse>
 }

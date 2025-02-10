@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ponap.filmfinder.data.MoviesRepository
+import com.ponap.filmfinder.data.MediaRepository
 import com.ponap.filmfinder.di.IoDispatcher
 import com.ponap.filmfinder.di.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,41 +15,41 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val repository: MoviesRepository,
+    private val repository: MediaRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val selectedMovieLiveData = repository.selectedMovieLiveData
+    val selectedMediaLiveData = repository.selectedMediaLiveData
 
     private val _loadingUiState: MutableLiveData<LoadingUiState> = MutableLiveData(LoadingUiState())
     val loadingUiState: LiveData<LoadingUiState>
         get() = _loadingUiState
 
     init {
-        fetchMovieDetails()
+        fetchMediaDetails()
     }
 
-    private fun fetchMovieDetails() {
-        val movie = selectedMovieLiveData.value
-        if (movie?.additionalDetails != null) {
+    private fun fetchMediaDetails() {
+        val media = selectedMediaLiveData.value
+        if (media?.additionalDetails != null) {
             // we already have the details :)
             return
         }
         _loadingUiState.value = LoadingUiState(isLoading = true)
 
         viewModelScope.launch(ioDispatcher) {
-            val imdbId = movie?.imdbId
+            val imdbId = media?.imdbId
             imdbId?.let {
-                val ret = repository.fetchMovieDetails(imdbId)
+                val ret = repository.fetchMediaDetails(imdbId)
 
                 withContext(mainDispatcher) {
                     if (ret.isSuccess) {
                         // remove loader:
                         _loadingUiState.value = LoadingUiState()
-                        // add the info to the movie and update the repository:
-                        movie.additionalDetails = ret.getOrNull()
-                        repository.setSelectedMovie(movie)
+                        // add the info to the media and update the repository:
+                        media.additionalDetails = ret.getOrNull()
+                        repository.setSelectedMedia(media)
                     } else {
                         // remove loader and inform the ui of error, if any:
                         _loadingUiState.value = LoadingUiState(
@@ -62,16 +62,16 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun toggleMovieIsFavorite() {
-        val movie = selectedMovieLiveData.value
-        movie?.let {
-            movie.isFavorite = !movie.isFavorite
-            if (movie.isFavorite){
-                repository.addToFavorites(movie.imdbId)
+    fun toggleMediaIsFavorite() {
+        val media = selectedMediaLiveData.value
+        media?.let {
+            media.isFavorite = !media.isFavorite
+            if (media.isFavorite){
+                repository.addToFavorites(media.imdbId)
             } else {
-                repository.removeFromFavorites(movie.imdbId)
+                repository.removeFromFavorites(media.imdbId)
             }
-            repository.setSelectedMovie(movie)
+            repository.setSelectedMedia(media)
         }
     }
 

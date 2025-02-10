@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.ponap.filmfinder.R
 import com.ponap.filmfinder.databinding.FragmentSearchBinding
-import com.ponap.filmfinder.model.Movie
+import com.ponap.filmfinder.model.Media
 import com.ponap.filmfinder.ui.search.adapter.PagingLoadStateAdapter
 import com.ponap.filmfinder.ui.search.adapter.SearchPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,8 +84,8 @@ class SearchFragment : Fragment() {
         }
 
         // observe the selected item:
-        viewModel.selectedMovieLiveData.observe(viewLifecycleOwner) { movie ->
-            adapter.updateUserSelection(movie?.imdbId)
+        viewModel.selectedMediaLiveData.observe(viewLifecycleOwner) { media ->
+            adapter.updateUserSelection(media?.imdbId)
         }
     }
 
@@ -135,11 +135,11 @@ class SearchFragment : Fragment() {
         )
     }
 
-    private fun onItemClicked(movie: Movie, position: Int) {
+    private fun onItemClicked(media: Media, position: Int) {
 
-        // pass the selection to viewModel, which will also check if the movie is selected or un-selected
-        if (viewModel.setSelectedMovieAsNeeded(movie)) {
-            // this is a new selected movie (i.e. not un-selecting already selected one), so
+        // pass the selection to viewModel, which will also check if the media is selected or un-selected
+        if (viewModel.setSelectedMediaAsNeeded(media)) {
+            // this is a new selected media (i.e. not un-selecting already selected one), so
             // snap to position, then navigate to details:
             binding.recycler.smoothScrollToPosition(position)
             binding.recycler.post {
@@ -160,8 +160,8 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun onItemFavoritesIconClicked(movie: Movie) {
-        viewModel.onMovieIsFavoriteChanged(movie)
+    private fun onItemFavoritesIconClicked(media: Media) {
+        viewModel.onMediaIsFavoriteChanged(media)
     }
 
     private fun safelyNavigateToDetails() {

@@ -14,8 +14,8 @@ import coil3.request.error
 import coil3.request.placeholder
 import com.ponap.filmfinder.R
 import com.ponap.filmfinder.databinding.FragmentDetailsBinding
-import com.ponap.filmfinder.model.Movie
-import com.ponap.filmfinder.model.MovieDetails
+import com.ponap.filmfinder.model.Media
+import com.ponap.filmfinder.model.MediaDetails
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -43,10 +43,10 @@ class DetailsFragment : Fragment() {
 
         setIsFavoriteListener()
 
-        // observe selectedMovieLiveData to display the movie and additional details once fetched:
-        viewModel.selectedMovieLiveData.observe(viewLifecycleOwner) { movie ->
-            movie?.let {
-                displayMovieInfo(movie)
+        // observe selectedMediaLiveData to display the media and additional details once fetched:
+        viewModel.selectedMediaLiveData.observe(viewLifecycleOwner) { media ->
+            media?.let {
+                displayMediaInfo(media)
             } ?: kotlin.run { findNavController().popBackStack() }
         }
 
@@ -58,7 +58,7 @@ class DetailsFragment : Fragment() {
             binding.errorMessage.isVisible = uiState.error != null
             uiState.error?.let { errorMessage ->
                 context?.let { ctx ->
-                    Timber.w("oy, error getting the movie details: $errorMessage")
+                    Timber.w("oy, error getting the media details: $errorMessage")
                     Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show()
                 }
             }
@@ -70,19 +70,19 @@ class DetailsFragment : Fragment() {
         _binding = null
     }
 
-    private fun displayMovieInfo(movie: Movie) {
-        binding.title.text = movie.title
-        binding.year.text = getString(R.string.separated_text, movie.year, movie.type)
-        binding.image.load(movie.poster) {
+    private fun displayMediaInfo(media: Media) {
+        binding.title.text = media.title
+        binding.year.text = getString(R.string.separated_text, media.year, media.type)
+        binding.image.load(media.poster) {
             placeholder(android.R.drawable.progress_indeterminate_horizontal)
             error(android.R.drawable.ic_menu_report_image)
         }
-        binding.image.contentDescription = movie.title
-        displayAdditionalDetails(movie.additionalDetails)
-        updateIsFavoriteIcon(movie.isFavorite)
+        binding.image.contentDescription = media.title
+        displayAdditionalDetails(media.additionalDetails)
+        updateIsFavoriteIcon(media.isFavorite)
     }
 
-    private fun displayAdditionalDetails(details: MovieDetails?) {
+    private fun displayAdditionalDetails(details: MediaDetails?) {
         if (details != null) {
             binding.genre.text = details.genre
             binding.rating.text = getString(R.string.ratings, details.imdbRating)
@@ -108,7 +108,7 @@ class DetailsFragment : Fragment() {
 
     private fun setIsFavoriteListener() {
         binding.isFavorite.setOnClickListener {
-            viewModel.toggleMovieIsFavorite()
+            viewModel.toggleMediaIsFavorite()
         }
     }
 

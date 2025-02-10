@@ -4,7 +4,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MoviesLocalDataSource @Inject constructor() {
+class MediaLocalDataSource @Inject constructor() {
     // a cache for favorite items, will still need to add persistence
     private val favorites: MutableSet<String> = mutableSetOf()
 

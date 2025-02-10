@@ -1,32 +1,32 @@
 package com.ponap.filmfinder.data
 
-import com.ponap.filmfinder.model.MovieDetails
-import com.ponap.filmfinder.model.MovieSearchResponse
+import com.ponap.filmfinder.model.MediaDetails
+import com.ponap.filmfinder.model.MediaSearchResponse
 import com.ponap.filmfinder.network.OmdbService
 import com.ponap.filmfinder.network.safeApiCall
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MoviesRemoteDataSource @Inject constructor(
+class MediaRemoteDataSource @Inject constructor(
     private val service: OmdbService
 ) {
 
-    suspend fun searchMoviesByPage(text: String, page: Int) = safeApiCall(
-        call = { requestSearchMoviesByPage(text, page) },
-        errorMessage = "error in searchMoviesByPage for $text"
+    suspend fun searchMediaByPage(text: String, page: Int) = safeApiCall(
+        call = { requestSearchMediaByPage(text, page) },
+        errorMessage = "error in searchMediaByPage for $text"
     )
 
-    suspend fun fetchMovieDetails(imdbId: String) = safeApiCall(
-        call = { requestFetchMovieDetails(imdbId) },
-        errorMessage = "error fetching Movie details"
+    suspend fun fetchMediaDetails(imdbId: String) = safeApiCall(
+        call = { requestFetchMediaDetails(imdbId) },
+        errorMessage = "error fetching media details"
     )
 
 
-    private suspend fun requestSearchMoviesByPage(
+    private suspend fun requestSearchMediaByPage(
         text: String,
         page: Int
-    ): Result<MovieSearchResponse> {
+    ): Result<MediaSearchResponse> {
         val response = service.search(text, page)
         var errorMessage: String? = null
         if (response.isSuccessful) {
@@ -39,15 +39,15 @@ class MoviesRemoteDataSource @Inject constructor(
         return Result.failure(Exception(errorMessage ?: "response wasn't successful"))
     }
 
-    private suspend fun requestFetchMovieDetails(movieId: String): Result<MovieDetails> {
-        val response = service.getMovieDetails(movieId)
+    private suspend fun requestFetchMediaDetails(imdbId: String): Result<MediaDetails> {
+        val response = service.getMediaDetails(imdbId)
         var errorMessage: String? = null
         if (response.isSuccessful) {
             if (response.body()?.apiResponse?.lowercase() == "true") {
-                val details = MovieDetails.fromApiDetailsResponse(response.body()!!)
+                val details = MediaDetails.fromApiDetailsResponse(response.body()!!)
                 return Result.success(details)
             } else {
-                errorMessage = response.body()?.error ?: "movie details unexpected response"
+                errorMessage = response.body()?.error ?: "media details unexpected response"
             }
         }
         return Result.failure(Exception(errorMessage ?: "response wasn't successful"))
